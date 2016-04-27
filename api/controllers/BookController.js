@@ -22,7 +22,7 @@ var googleBooks = require('../services/google-books-search');
 	    
 // 	});
 // }
-
+ 
 module.exports = {
 	get : function(req, res) {
 		var id = parseInt(req.param('id'));
