@@ -5,7 +5,7 @@
  * @help        :: See https://github.com/auth0/node-jsonwebtoken & http://sailsjs.org/#!/documentation/concepts/Services
  */
 
-var googleBooks = require('google-books-search.js');
+var googleBooks = require('/api/services/google-books-search.js');
 
 module.exports.getGoogleBook = function(id, callback) {
   var book;
