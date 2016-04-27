@@ -56,19 +56,19 @@ module.exports.connections = {
   * Run: npm install sails-mongo                                             *
   *                                                                          *
   ***************************************************************************/
-  bookiqueMongodbServer: {
-    adapter: 'sails-mongo',
-    host: 'localhost',
-    port: 27017,
-    // user: 'omar',
-    // password: 'A55ad1sp',
-    // database: 'your_mongo_db_name_here'
-  },
-
   // bookiqueMongodbServer: {
   //   adapter: 'sails-mongo',
-  //   url : process.env.MONGOLAB_URI
-  // },  
+  //   host: 'localhost',
+  //   port: 27017,
+  //   // user: 'omar',
+  //   // password: 'A55ad1sp',
+  //   // database: 'your_mongo_db_name_here'
+  // },
+
+  bookiqueMongodbServer: {
+    adapter: 'sails-mongo',
+    url : process.env.MONGOLAB_URI
+  },  
 
   /***************************************************************************
   *                                                                          *
