@@ -70,6 +70,15 @@ module.exports.connections = {
     url : process.env.MONGOLAB_URI
   },  
 
+  bookiqueMongodbServerLocal : {
+    adapter: 'sails-mongo',
+    host: 'localhost',
+    port: 27017,
+    // user: 'omar',
+    // password: 'A55ad1sp',
+    // database: 'your_mongo_db_name_here'    
+  },
+
   /***************************************************************************
   *                                                                          *
   * PostgreSQL is another officially supported relational database.          *
@@ -79,13 +88,13 @@ module.exports.connections = {
   *                                                                          *
   *                                                                          *
   ***************************************************************************/
-  somePostgresqlServer: {
-    adapter: 'sails-postgresql',
-    host: 'YOUR_POSTGRES_SERVER_HOSTNAME_OR_IP_ADDRESS',
-    user: 'YOUR_POSTGRES_USER',
-    password: 'YOUR_POSTGRES_PASSWORD',
-    database: 'YOUR_POSTGRES_DB'
-  }
+  // somePostgresqlServer: {
+  //   adapter: 'sails-postgresql',
+  //   host: 'YOUR_POSTGRES_SERVER_HOSTNAME_OR_IP_ADDRESS',
+  //   user: 'YOUR_POSTGRES_USER',
+  //   password: 'YOUR_POSTGRES_PASSWORD',
+  //   database: 'YOUR_POSTGRES_DB'
+  // }
 
 
   /***************************************************************************
