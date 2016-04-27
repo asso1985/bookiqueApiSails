@@ -5,8 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var googleBooks = require('google-books-search');
-
+//var googleBooks = require('google-books-search');
+var googleBooks = require('../services/google-books-search');
 // var _getGoogleBook = function(id, callback) {
 // 	googleBooks.getBook(id, function(error, results) {
 // 		var book = null;		
