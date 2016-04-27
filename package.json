@@ -7,7 +7,7 @@
   "dependencies": {
     "bcrypt": "^0.8.6",
     "ejs": "2.3.4",
-    "google-books-search": "file:api/services/google-books-search.js",
+    //"google-books-search": "file:api/services/google-books-search.js",
     "grunt": "0.4.5",
     "grunt-contrib-clean": "0.6.0",
     "grunt-contrib-coffee": "0.13.0",
