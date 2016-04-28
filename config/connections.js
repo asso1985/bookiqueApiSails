@@ -58,10 +58,10 @@ module.exports.connections = {
   ***************************************************************************/
 
 
-  bookiqueMongodbServer: {
-    adapter: 'sails-mongo',
-    url : process.env.MONGOLAB_URI
-  },  
+  // bookiqueMongodbServer: {
+  //   adapter: 'sails-mongo',
+  //   url : process.env.MONGOLAB_URI
+  // },  
 
   // bookiqueMongodbServerLocal : {
   //   adapter: 'sails-mongo',
