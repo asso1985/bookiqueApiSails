@@ -17,9 +17,17 @@ module.exports = {
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
 
-  models: {
-    connection: 'bookiqueMongodbServer'
-  },
+  connections : {
+        bookiqueMongodbServer: {
+        adapter: 'sails-mongo',
+        url : process.env.MONGOLAB_URI
+        }
+    },
+    models: {
+        connection: 'bookiqueMongodbServer',
+        migrate: 'safe'
+    },
+    port: process.env.PORT || 80 
 
 
   /***************************************************************************
