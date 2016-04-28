@@ -58,19 +58,19 @@ module.exports.connections = {
   ***************************************************************************/
 
 
-  // bookiqueMongodbServer: {
-  //   adapter: 'sails-mongo',
-  //   url : process.env.MONGOLAB_URI
-  // },  
+  bookiqueMongodbServer: {
+    adapter: 'sails-mongo',
+    url : process.env.MONGOLAB_URI
+  },  
 
-  // bookiqueMongodbServerLocal : {
-  //   adapter: 'sails-mongo',
-  //   host: 'localhost',
-  //   port: 27017,
-  //   // user: 'omar',
-  //   // password: 'A55ad1sp',
-  //   // database: 'your_mongo_db_name_here'    
-  // },
+  bookiqueMongodbServerLocal : {
+    adapter: 'sails-mongo',
+    host: 'localhost',
+    port: 27017,
+    // user: 'omar',
+    // password: 'A55ad1sp',
+    // database: 'your_mongo_db_name_here'    
+  },
 
   /***************************************************************************
   *                                                                          *
