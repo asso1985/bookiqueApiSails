@@ -16,9 +16,18 @@ module.exports = {
    * Set the default database connection for models in the development       *
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
-
+  connections : {
+	  bookiqueMongodbServerLocal : {
+	    adapter: 'sails-mongo',
+	    host: 'localhost',
+	    port: 27017,
+	    // user: 'omar',
+	    // password: 'A55ad1sp',
+	    // database: 'your_mongo_db_name_here'    
+	  }  	
+  },
   models: {
-    connection: 'bookiqueMongodbServer'
+    connection: 'bookiqueMongodbServerLocal'
   }
 
 };
