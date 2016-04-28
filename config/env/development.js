@@ -18,7 +18,7 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: 'bookiqueMongodbServer'
+    connection: 'bookiqueMongodbServerLocal'
   }
 
 };
