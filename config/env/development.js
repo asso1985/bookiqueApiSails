@@ -20,17 +20,9 @@ module.exports = {
   // models: {
   //   connection: 'bookiqueMongodbServer'
   // }
-
-  connections : {
-        bookiqueMongodbServer: {
-          adapter: 'sails-mongo',
-          url : process.env.MONGOLAB_URI
-        }
-    },
     models: {
-        connection: 'bookiqueMongodbServer',
+        connection: 'mongoDbDefaults',
         migrate: 'safe'
-    },
-    port: process.env.PORT || 80 
+    }
 
 };
