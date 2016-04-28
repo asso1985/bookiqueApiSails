@@ -64,22 +64,22 @@ module.exports.connections = {
          password: '2ktqlvhar34g2o36bg2pj84dik',
          database: 'heroku_cpj7w2xl',
          schema: true
-    }
+    },
 
   // bookiqueMongodbServer: {
   //   adapter: 'sails-mongo',
   //   url : process.env.MONGOLAB_URI
   // },   
 
-  // bookiqueMongodbServerLocal : {
-  //   adapter: 'sails-mongo',
-  //   //url : process.env.MONGOLAB_URI
-  //   host: 'localhost',
-  //   port: 27017,
-  //   // user: 'omar',
-  //   // password: 'A55ad1sp',
-  //   // database: 'your_mongo_db_name_here'    
-  // },
+  bookiqueMongodbServerLocal : {
+    adapter: 'sails-mongo',
+    //url : process.env.MONGOLAB_URI
+    host: 'localhost',
+    port: 27017,
+    // user: 'omar',
+    // password: 'A55ad1sp',
+    // database: 'your_mongo_db_name_here'    
+  },
 
   /***************************************************************************
   *                                                                          *

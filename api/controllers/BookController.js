@@ -69,7 +69,7 @@ module.exports = {
 
 		var searchResults;
 
-		googleBooks.search(req.param('q'), {limit:5}, function(error, googleResults){
+		googleBooks.search(req.param('q'), {limit:req.param('limit')}, function(error, googleResults){
 			if (!error) {
 				Book.find({where: {title : {startsWith : req.param('q')}}}).exec(function callBack(err, results){
 					googleResults.forEach(function(googleItem, i){

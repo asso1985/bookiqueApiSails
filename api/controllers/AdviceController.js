@@ -11,6 +11,10 @@ module.exports = {
 			.populate('bookStart')
 			.populate('bookEnd')
 		
+		myQuery.sort('createdAt DESC');
+
+		myQuery.limit(12);
+
 		myQuery.exec(function callBack(err,results){
 			return res.json(results);		    
 		});
