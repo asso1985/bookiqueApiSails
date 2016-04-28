@@ -74,7 +74,7 @@ module.exports.session = {
   // collection: 'sessions',
 
 
-    adapter: 'sails-mongo',
+    adapter: 'mongo',
     url : process.env.MONGOLAB_URI    
 
   /***************************************************************************
