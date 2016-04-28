@@ -8,7 +8,7 @@
 var bcrypt = require('bcrypt');
 
 module.exports = {
-  schema : true, 
+  schema : false, 
   uniqueEmail: false,
   types: {
       uniqueEmail: function(value) {

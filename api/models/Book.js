@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-
+  schema : false,
   attributes: {
     title: {
       type: 'string',

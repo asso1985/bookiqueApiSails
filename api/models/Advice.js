@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-
+  schema : false,
   attributes: {
   	bookStart : {
   		model : 'book'
