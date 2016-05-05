@@ -44,12 +44,14 @@ module.exports.routes = {
   '/advice/getAdviceByBookStart' : 'AdviceController.getAdviceByBookStart',
   '/advice/getAdviceByBookEnd' : 'AdviceController.getAdviceByBookEnd',
   '/advice/getUserAdvices' : 'AdviceController.getUserAdvices',
+  '/askedAdvice/create' : 'AskedAdviceController.create',
   '/askedAdvice/addReply' : 'AskedAdviceController.addReply',
   '/askedAdvice/getAskedAdvices' : 'AskedAdviceController.getAskedAdvices',  
   '/book/get/:id' : 'BookController.get',
   '/follower/check' : 'FollowerController.check',
   '/follower/getFollowers/:followeeId' : 'FollowerController.getFollowers',
   '/follower/getFollowees/:followerId' : 'FollowerController.getFollowees',
+  '/followUser' : 'FollowerController.followUser',
   '/user/getUser/:id' : 'UserController.getUser'
 
   /***************************************************************************

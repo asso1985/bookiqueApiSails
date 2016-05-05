@@ -9,6 +9,20 @@ module.exports = {
 	check  : function(req, res) {
 
 	},
+	followUser : function(req, res) {
+		if (req.body.follower && req.body.followee) {
+			Follower.create(req.body)
+				.exec(function callBack(err, following){
+					if (!err) {
+						return res.json(200, following);
+					} else {
+						return res.json(401, {err:err});
+					}
+				})
+		} else {
+			return res.json(401, {err:{message:"params missing"}});
+		}
+	},
 	getFollowers : function(req, res) {
 		var followeeId = req.param('followeeId');
 
