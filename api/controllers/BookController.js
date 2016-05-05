@@ -7,6 +7,10 @@
 
 //var googleBooks = require('google-books-search');
 var googleBooks = require('../services/google-books-search');
+
+var groupArray = require('group-array');
+var _ = require('underscore');
+
 // var _getGoogleBook = function(id, callback) {
 // 	googleBooks.getBook(id, function(error, results) {
 // 		var book = null;		
@@ -33,14 +37,59 @@ module.exports = {
 			var googleId = req.param('id');
 			var myQuery = Book.find({ where: { googleId : googleId }});
 		}
+
+
 		
 		
 		myQuery.exec(function callBack(err,result){
 			var response = {};
 			if (result.length > 0) {
-				response.book = result[0];
-				console.log(response.book.id);
-				return res.json(response);
+				response.book = result[0];	
+
+				var queryGetAdvices = Advice.find({ where: { bookStart : result[0].id }})					
+					.limit(5)
+					.sort('createdAt DESC')
+					.populate('bookEnd')
+					.populate('user')					
+					
+				
+
+
+				queryGetAdvices.exec(function callBack(err,advices){
+					if (!err) {
+						
+						
+						var advicesGrouped = groupArray(advices, "bookEnd.id", "user.id");	
+						var advResults = [];			
+						_.map(advicesGrouped, function(advice, key) {
+							var advObj = {}
+							advObj.users = [];
+							var test = Object.keys(advice).map(function (key) {
+							  //console.log(advice[key][0].user)
+							  advObj.book = advice[key][0];
+							  advObj.users.push(advice[key][0].user)
+							  return advice[key][0];
+							});
+
+
+
+
+							advResults.push(advObj);
+
+
+						})
+						response.advices = advResults;	
+						
+
+
+						return res.json(response);
+					} else {
+						return res.json(401, {err:err})
+					}
+			    	
+				});	
+
+				
 			} else {
 				// _getGoogleBook(req.param('id'), function(book){
 				// 	if (book) {
@@ -54,12 +103,28 @@ module.exports = {
 				googlebookservice.getGoogleBook(req.param('id'), function(err, book){
 
 					if (book) {
-
 						Book.create(book).exec(function createCB(err, created){
 							response.book = created;
-							console.log(response.book.id);
-							return res.json(response);
+							var queryGetAdvices = Advice.find({ where: { bookStart : created.id }})
+								.populate('bookEnd')
+								.limit(4);
+							
+
+
+							queryGetAdvices.exec(function callBack(err,advices){
+								if (!err) {
+									response.advices = advices;
+
+									return res.json(response);
+								};
+						    	
+							});								
+							
 						})
+					};
+
+					if (err) {
+						return res.json(401, {err:err})
 					};
 				})		
 			}    
@@ -90,7 +155,11 @@ module.exports = {
 				console.log('Error', error);
 			}
 		})
-	}
+	},
+	getMostAdvised : function(re, res) {
+		var mostAdvisedBooks;
+
+	} 
 };
 
 

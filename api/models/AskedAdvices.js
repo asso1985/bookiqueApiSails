@@ -1,5 +1,5 @@
 /**
- * Advice.js
+ * AskedAdvices.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -11,9 +11,9 @@ module.exports = {
   	bookStart : {
   		model : 'book'
   	},
-  	bookEnd : {
-  		model : 'book',
-      required : true
+  	replayAdvices : {
+      collection: 'replybookend'
+
   	},
   	user : {
   		model : 'user',

@@ -1,5 +1,5 @@
 /**
- * Advice.js
+ * ReplyBookEnd.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
@@ -8,25 +8,16 @@
 module.exports = {
   schema : false,
   attributes: {
-  	bookStart : {
-  		model : 'book'
-  	},
   	bookEnd : {
-  		model : 'book',
-      required : true
+  		model : 'book'
   	},
   	user : {
   		model : 'user',
-      required : true
+      	required : true
   	},
     text : {
       type : "text"
     }
-    // toJSON: function() {
-    //   var obj = this.toObject();
-    //   delete obj.user.encryptedPassword;
-    //   return obj;
-    // } 
   }
 };
 

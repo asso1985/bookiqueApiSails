@@ -8,25 +8,13 @@
 module.exports = {
   schema : false,
   attributes: {
-  	bookStart : {
-  		model : 'book'
+  	follower : {
+  		model : 'user'
   	},
-  	bookEnd : {
-  		model : 'book',
-      required : true
-  	},
-  	user : {
+  	followee : {
   		model : 'user',
       required : true
-  	},
-    text : {
-      type : "text"
-    }
-    // toJSON: function() {
-    //   var obj = this.toObject();
-    //   delete obj.user.encryptedPassword;
-    //   return obj;
-    // } 
+  	}
   }
 };
 

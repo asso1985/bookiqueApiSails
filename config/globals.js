@@ -10,6 +10,9 @@
  */
 module.exports.globals = {
 
+  adapters: true,
+  models: true
+
   /****************************************************************************
   *                                                                           *
   * Expose the lodash installed in Sails core as a global variable. If this   *

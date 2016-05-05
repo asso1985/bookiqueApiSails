@@ -38,8 +38,19 @@ module.exports.routes = {
   '/auth/login' : 'AuthController.login',
   '/auth/register' : 'UserController.create',
   '/auth/check' : 'AuthController.check',
+  '/auth/checkfbUser' : 'AuthController.checkfbUser',
   '/advice/latest' : 'AdviceController.getLatest',
-  '/book/get/:id' : 'BookController.get'
+  '/advice/create' : 'AdviceController.mycreate',
+  '/advice/getAdviceByBookStart' : 'AdviceController.getAdviceByBookStart',
+  '/advice/getAdviceByBookEnd' : 'AdviceController.getAdviceByBookEnd',
+  '/advice/getUserAdvices' : 'AdviceController.getUserAdvices',
+  '/askedAdvice/addReply' : 'AskedAdviceController.addReply',
+  '/askedAdvice/getAskedAdvices' : 'AskedAdviceController.getAskedAdvices',  
+  '/book/get/:id' : 'BookController.get',
+  '/follower/check' : 'FollowerController.check',
+  '/follower/getFollowers/:followeeId' : 'FollowerController.getFollowers',
+  '/follower/getFollowees/:followerId' : 'FollowerController.getFollowees',
+  '/user/getUser/:id' : 'UserController.getUser'
 
   /***************************************************************************
   *                                                                          *

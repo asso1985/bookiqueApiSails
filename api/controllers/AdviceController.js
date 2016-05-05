@@ -10,40 +10,75 @@ module.exports = {
 		var myQuery = Advice.find()
 			.populate('bookStart')
 			.populate('bookEnd')
+			.populate('user')
 		
 		myQuery.sort('createdAt DESC');
 
-		myQuery.limit(12);
+		if (req.param('limit')) {
+			myQuery.limit(req.param('limit'));	
+		};
 
 		myQuery.exec(function callBack(err,results){
-			return res.json(results);		    
+			if (!err) {
+				return res.json(200, results);		
+			} else {
+				return res.json(401, {err:err})
+			}
+			
 		});
 	},
 	getAdviceByBookStart : function(req, res) {
 		
-		var myQuery = Advice.find({ where: { bookStart : req.param('id') }})
-			.populate('bookStart')
+		var myQuery = Advice.find({ where: { bookStart : req.body.bookStartId }})
 			.populate('bookEnd')
 		
 		myQuery.exec(function callBack(err,results){
-			return res.json({
-	      		advices: results
-	    	});		    
+			if (!err) {
+				return res.json({
+		      		advices: results
+		    	});		    
+			} else {
+				return res.json(results);		
+			}
+
 		});			
 	},
 	getAdviceByBookEnd : function(req, res) {
 		
 		var myQuery = Advice.find({ where: { bookEnd : req.param('id') }})
 			.populate('bookStart')
-			.populate('bookEnd')
 		
 		myQuery.exec(function callBack(err,results){
-			return res.json({
-	      		advices: results
-	    	});		    
+			if (!err) {
+				return res.json({
+		      		advices: results
+		    	});		    
+			} else {
+				return res.json(results);	
+			}
+
 		});			
 	},
-	create : function(req, res) {
+	getUserAdvices : function(req, res) {
+		var myQuery = Advice.find({ where: { user : req.body.user }})
+			.populate('bookStart')
+			.populate('bookEnd')
+			.sort('createdAt DESC')
+			.limit(req.body.limit)
+		
+		myQuery.exec(function callBack(err,results){
+			if (!err) {
+				return res.json({
+		      		advices: results
+		    	});	
+			} else {
+				return res.json(results);
+			}
+	    
+		});
+	},
+	mycreate : function(req, res) {
+
 
 		var text;
 
@@ -62,11 +97,15 @@ module.exports = {
 
 			Advice.create(adv).exec(function createCB(err, created){
 				if (!err) {
-					response.advice = created;
-					return res.json(response);					
-				};				
+					response.advice = created;					
+					return res.json(response);
+				} else {
+					return res.json(results);	
+				}
 
 			})
+
+
 		}	
 		
 		if (req.body.bookStart) {
