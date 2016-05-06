@@ -11,14 +11,24 @@ module.exports = {
 	},
 	followUser : function(req, res) {
 		if (req.body.follower && req.body.followee) {
-			Follower.create(req.body)
-				.exec(function callBack(err, following){
-					if (!err) {
-						return res.json(200, following);
+			var queryCheckFollowing = Follower.find({where : {follower:req.body.follower, followee: req.body.followee}});
+			
+			queryCheckFollowing.exec(function callBack(err, check){
+				if (!err) {
+					if (check.length==0) {
+						Follower.create(req.body)
+							.exec(function callBack(err, following){
+								if (!err) {
+									return res.json(200, following);
+								} else {
+									return res.json(401, {err:err});
+								}
+							})
 					} else {
-						return res.json(401, {err:err});
+						return res.json(200, check);
 					}
-				})
+				};
+			})
 		} else {
 			return res.json(401, {err:{message:"params missing"}});
 		}
@@ -69,13 +79,16 @@ module.exports = {
 			if (!err) {
 				var followeesResponse = [];
 				_.map(followees, function(follower, key){
-					var followerObj = {
-						username : follower.followee.username,
-						email : follower.followee.email,
-						id : follower.followee.id,
-						thumb : follower.followee.thumb
-					}
-					followeesResponse.push({follower : followerObj, createdAt : follower.createdAt, updatedAt:follower.updatedAt})
+					if (follower.followee && follower.follower) {
+						var followerObj = {
+							username : follower.followee.username,
+							email : follower.followee.email,
+							id : follower.followee.id,
+							thumb : follower.followee.thumb
+						}
+						followeesResponse.push({follower : followerObj, createdAt : follower.createdAt, updatedAt:follower.updatedAt})						
+					};
+					
 				})
 				return res.json(followeesResponse);	
 			} else {

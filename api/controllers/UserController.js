@@ -36,12 +36,19 @@ module.exports = {
 	},
 	getUser : function(req, res) {
 			var userId = req.param("id");
-				
+			var userSessionId = req.param("userSessionId");
+
+			// console.log(userSessionId)
+
+					
 			var queryUser = User.find({where : {id : userId}});
 			var queryFollowersCount = Follower.count({followee : userId});
 			var queryFolloweesCount = Follower.count({follower : userId});
 			var queryAdvicesCount = Advice.count({user : userId});
 
+			if (userSessionId) {
+				var queryIsFollowee = Follower.find({where : {follower : userSessionId, followee:userId}});	
+			};
 			var result = {};
 
 			queryUser.exec(function callBack(err,user){
@@ -58,7 +65,28 @@ module.exports = {
 											result.followersCount = countFollowers;
 											result.followeesCount = countFollowees;
 											result.advicesCount = advicesCount;
-											return res.json(200, {result : result})											
+
+											if (userSessionId) {
+												queryIsFollowee.exec(function callBack(err, isFollowee){
+													
+													if (isFollowee.length > 0) {
+														result.following = true;
+													} else {
+														result.following = false;
+													}
+
+													if (!err) {
+														return res.json(200, {result : result})	
+													} else {
+														return res.json(401, {err : err})
+													}
+													
+												})
+											} else {
+												return res.json(200, {result : result})
+											}
+
+																						
 										};
 									})
 

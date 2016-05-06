@@ -52,7 +52,7 @@ module.exports.routes = {
   '/follower/getFollowers/:followeeId' : 'FollowerController.getFollowers',
   '/follower/getFollowees/:followerId' : 'FollowerController.getFollowees',
   '/followUser' : 'FollowerController.followUser',
-  '/user/getUser/:id' : 'UserController.getUser'
+  '/user/getUser/:id/:userSessionId' : 'UserController.getUser' 
 
   /***************************************************************************
   *                                                                          *
