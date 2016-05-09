@@ -22,7 +22,7 @@ module.exports = {
   // }
     models: {
         connection: 'mongoDbDefaults',
-        migrate: 'safe'
+        migrate: 'drop'
     }
 
 };
