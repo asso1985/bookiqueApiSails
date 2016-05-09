@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var FB = require('fb');
+
 module.exports = {
 	create : function(req, res) {
 		console.log(req.body.fbId)
@@ -34,11 +36,59 @@ module.exports = {
 	update : function(req, res) {
 		
 	},
+	findFacebookFriends: function(req, res) {
+			
+
+		var limit = 10;
+		var page = req.body.page;
+		var skip = page*10;
+
+		FB.setAccessToken(req.body.token);
+
+		async.auto({
+			getFacebookUsers : function(cb) {
+
+				var fbUserIds = []; 
+
+				FB.api('me/friends?fields=id,name,installed', function (response) {
+				  	if(!response || response.error) {
+				    	return cb(response.error, null);				    
+				  	} else {
+				  		_.each(response.data, function(item, i){
+				  			fbUserIds.push(parseInt(item.id));
+				  		})
+
+						fbUserIds = _.uniq(fbUserIds);
+
+						return cb(null, fbUserIds);
+
+				  	}
+					
+				});	
+				
+			},
+			getBookiqueUsers : ["getFacebookUsers", function(cb, results) {
+				User.find({fbId:results.getFacebookUsers}).exec(cb);
+			}]
+
+
+		}, function allTasksDone(err, results) {
+			
+			if (err) {return res.json(401, {err:err})};
+
+
+			var fbUsers = results.getBookiqueUsers;
+
+			
+
+			return res.json(200, fbUsers);
+
+		})
+
+	},
 	getUser : function(req, res) {
 			var userId = req.param("id");
 			var userSessionId = req.param("userSessionId");
-
-			// console.log(userSessionId)
 
 					
 			var queryUser = User.find({where : {id : userId}});

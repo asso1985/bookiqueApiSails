@@ -97,10 +97,22 @@ module.exports = {
 
 			Advice.create(adv).exec(function createCB(err, created){
 				if (!err) {
-					response.advice = created;					
-					return res.json(response);
-				} else {
-					return res.json(results);	
+					response.advice = created;		
+					
+					Advice.find({id:created.id})
+						.populate("bookStart")
+						.populate("bookEnd")
+						.populate("user")
+						.exec(function callBack(err, createdPopulated) {
+							sails.sockets.blast("addedAdvice", createdPopulated); 
+							return res.json(createdPopulated);
+						})
+
+					
+
+				} else {					
+
+					return res.json(401, {err:err});	
 				}
 
 			})

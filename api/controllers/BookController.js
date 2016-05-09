@@ -38,8 +38,6 @@ module.exports = {
 			var myQuery = Book.find({ where: { googleId : googleId }});
 		}
 
-
-		
 		
 		myQuery.exec(function callBack(err,result){
 			var response = {};
@@ -71,15 +69,11 @@ module.exports = {
 							  return advice[key][0];
 							});
 
-
-
-
 							advResults.push(advObj);
 
 
 						})
-						response.advices = advResults;	
-						
+						response.advices = advResults;						
 
 
 						return res.json(response);
@@ -114,7 +108,7 @@ module.exports = {
 							queryGetAdvices.exec(function callBack(err,advices){
 								if (!err) {
 									response.advices = advices;
-
+									
 									return res.json(response);
 								};
 						    	

@@ -12,7 +12,19 @@ module.exports = {
 			AskedAdvices.create(data)
 				.exec(function(err, askedAdvice) {
 					if (!err) {
-						return res.json(200, askedAdvice)
+						AskedAdvices.find({id:askedAdvice.id})
+							.populate('bookStart')
+							.populate('user')
+							.populate('replayAdvices')
+							.exec(function callBack(err, askedAdvicePopulated) {
+								if (!err) {
+									
+									sails.sockets.blast("addedAskedAdvice", askedAdvicePopulated);
+									
+									return res.json(200, askedAdvice)		
+								};
+								
+							})
 					} else {
 						return res.json(401, err)
 					}
@@ -55,8 +67,8 @@ module.exports = {
 
 
 		queryAskedAdvices.exec(function callBack(err,askedAdvices){
-			if (!err) {
-				return res.json(200, {askedAdvices})
+			if (!err) {				
+				return res.json(200, askedAdvices)
 			} else {
 				return res.json(401, {err:err})
 			}
