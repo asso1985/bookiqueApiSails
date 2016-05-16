@@ -127,6 +127,8 @@ module.exports = {
 		var userId = req.body.userId;
 		var adviceId = req.body.adviceId;
 
+		console.log('Advice ID: '+adviceId);
+
 		AdviceLike.findOrCreate({where:{objectLiked:adviceId, user:userId}})
 			.exec(function callBack(err, likeObject){
 				if (!err) {					
@@ -134,6 +136,8 @@ module.exports = {
 					
 						Advice.findOne({id:adviceId}, function foundAdvice(err, advice){
 							var likes;
+
+							console.log(advice);
 
 							if (advice.likes) {
 								likes = advice.likes+1;
@@ -163,20 +167,50 @@ module.exports = {
 		AdviceLike.find({where:{objectLiked:req.body.adviceId, user:req.body.userId}})
 			.exec(function(err, found){
 				console.log(found);
-				// AdviceLike.destroy({
-				//   id: found.id
-				// }).exec(function (err){
-				//   if (err) {
-				//     return res.negotiate(err);
-				//   }
-				//   sails.log('Deleted book with `id: 4`, if it existed.');
-				//   return res.ok();
-				// });				
+				AdviceLike.destroy({
+				  id: found[0].id
+				}).exec(function (err){
+				  if (err) {
+				    return res.json(401, err);
+				  } else {
+						Advice.findOne({id:req.body.adviceId}, function foundAdvice(err, advice){
+							var likes;
+							
+							likes = advice.likes-1;
+
+							console.log(likes);
+							
+							Advice.update(req.body.adviceId, {likes:likes}, function(errUpdate, updated){
+								if (!err) {
+									return res.json(200, updated);			
+								} else {
+									return res.json(401, errUpdate);
+								}
+							})
+						})
+				  }
+				 
+				});				
 			})
 
 	},	
 	getLikes : function(req, res) {
+		AdviceLike.find({objectLiked:req.param('id')})
+			.populate("user")
+			.exec(function (err, list){
+				if (!err) {
+					var people = [];
+					_.map(list, function(item, i){
+						people.push(item.user);
+					})
+					return res.json(200, people);
+				} else {
+					return res.json(401, err);
+				}
 
+				
+				
+			})
 	},	
 	mycreate : function(req, res) {
 
