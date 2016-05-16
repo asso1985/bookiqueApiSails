@@ -8,9 +8,7 @@
 var async = require('async'); 
 
 module.exports = {
-	getLatest : function(req, res) {	
-
-		console.log(req.body.userId)	
+	getLatest : function(req, res) {		
 
 		var myQuery = Advice.find()
 			.populate('bookStart')
@@ -95,11 +93,32 @@ module.exports = {
 		
 		myQuery.exec(function callBack(err,results){
 			if (!err) {
-				return res.json({
-		      		advices: results
-		    	});	
+				async.eachSeries(results, function(advice, next){
+					if (err) return next(err);
+
+					AdviceLike.find({user:req.body.loggedUser, objectLiked: advice.id})
+						.exec(function callBack(err,resultsLike){
+							if (!err) {
+								if (resultsLike[0]) {
+									advice.liked = true;
+								};
+								next();
+							} else {
+								return res.json(401, err);
+							}
+						})
+				}, function(err){
+					if (!err) {
+						return res.json(200, {
+				      		advices: results
+				    	});							
+					} else {
+						return res.json(401, err);	
+					}
+				})				
+				
 			} else {
-				return res.json(results);
+				return res.json(401, {err:err})
 			}
 	    
 		});
