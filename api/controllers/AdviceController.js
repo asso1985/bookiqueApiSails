@@ -141,6 +141,19 @@ module.exports = {
 			});
 	},
 	removeLike : function(req, res) {
+		AdviceLike.find({where:{objectLiked:req.body.adviceId, user:req.body.userId}})
+			.exec(function(err, found){
+				console.log(found);
+				// AdviceLike.destroy({
+				//   id: found.id
+				// }).exec(function (err){
+				//   if (err) {
+				//     return res.negotiate(err);
+				//   }
+				//   sails.log('Deleted book with `id: 4`, if it existed.');
+				//   return res.ok();
+				// });				
+			})
 
 	},	
 	getLikes : function(req, res) {
