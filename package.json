@@ -5,6 +5,7 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
+    "async": "^2.0.0-rc.5",
     "bcrypt": "^0.8.6",
     "connect-redis": "1.4.5",
     "ejs": "2.3.4",

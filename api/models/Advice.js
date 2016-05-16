@@ -21,12 +21,10 @@ module.exports = {
   	},
     text : {
       type : "text"
+    },
+    likes : {
+      type : "integer"
     }
-    // toJSON: function() {
-    //   var obj = this.toObject();
-    //   delete obj.user.encryptedPassword;
-    //   return obj;
-    // } 
   }
 };
 

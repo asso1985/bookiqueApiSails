@@ -5,8 +5,13 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var async = require('async'); 
+
 module.exports = {
-	getLatest : function(req, res) {
+	getLatest : function(req, res) {	
+
+		console.log(req.body.userId)	
+
 		var myQuery = Advice.find()
 			.populate('bookStart')
 			.populate('bookEnd')
@@ -14,13 +19,35 @@ module.exports = {
 		
 		myQuery.sort('createdAt DESC');
 
-		if (req.param('limit')) {
-			myQuery.limit(req.param('limit'));	
+		if (req.body.limit) {
+			myQuery.limit(req.body.limit);	
 		};
 
 		myQuery.exec(function callBack(err,results){
+
 			if (!err) {
-				return res.json(200, results);		
+				async.eachSeries(results, function(advice, next){
+					if (err) return next(err);
+
+					AdviceLike.find({user:req.body.userId, objectLiked: advice.id})
+						.exec(function callBack(err,resultsLike){
+							if (!err) {
+								if (resultsLike[0]) {
+									advice.liked = true;
+								};
+								next();
+							} else {
+								return res.json(401, err);
+							}
+						})
+				}, function(err){
+					if (!err) {
+						return res.json(200, results);		
+					} else {
+						return res.json(401, err);	
+					}
+				})				
+				
 			} else {
 				return res.json(401, {err:err})
 			}
@@ -77,6 +104,49 @@ module.exports = {
 	    
 		});
 	},
+	addLike : function(req, res) {
+		var userId = req.body.userId;
+		var adviceId = req.body.adviceId;
+
+		AdviceLike.findOrCreate({objectLiked:adviceId, user:userId})
+			.exec(function callBack(err, likeObject){
+				if (!err) {
+					console.log(likeObject);
+
+					if (likeObject.user!=userId) {
+						Advice.findOne({id:adviceId}, function foundAdvice(err, advice){
+							var likes;
+
+							if (advice.likes) {
+								likes = advice.likes+1;
+							} else {
+								likes = 1;
+							}
+
+							console.log(likes);
+							
+							Advice.update(adviceId, {likes:likes}, function(errUpdate, updated){
+								if (!err) {
+									console.log(updated);
+									return res.json(200, likeObject);			
+								} else {
+									return res.json(401, errUpdate);
+								}
+							})
+						})
+					};
+					
+				} else {
+					return res.json(401, err);
+				}
+			});
+	},
+	removeLike : function(req, res) {
+
+	},	
+	getLikes : function(req, res) {
+
+	},	
 	mycreate : function(req, res) {
 
 
