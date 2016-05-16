@@ -108,12 +108,11 @@ module.exports = {
 		var userId = req.body.userId;
 		var adviceId = req.body.adviceId;
 
-		AdviceLike.findOrCreate({objectLiked:adviceId, user:userId})
+		AdviceLike.find({where:{objectLiked:adviceId, user:userId}})
 			.exec(function callBack(err, likeObject){
-				if (!err) {
-					console.log(likeObject);
+				if (!err) {					
 
-					if (likeObject.user!=userId) {
+					
 						Advice.findOne({id:adviceId}, function foundAdvice(err, advice){
 							var likes;
 
@@ -134,7 +133,7 @@ module.exports = {
 								}
 							})
 						})
-					};
+					
 					
 				} else {
 					return res.json(401, err);
