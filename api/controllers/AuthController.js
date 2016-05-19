@@ -62,7 +62,7 @@ module.exports = {
       if (user) {
         return res.json(200, {result : true, message : "This Facebook user exist", user : user})
       } else {
-        return res.json(401, {result : false, message : "This Facebook user does not exist"})
+        return res.json(200, {result : false, message : "This Facebook user does not exist"})
       }
     })
   }, 

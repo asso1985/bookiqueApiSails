@@ -58,6 +58,7 @@ module.exports.routes = {
   '/followUser' : 'FollowerController.followUser',
   '/user/getUser/:id/:userSessionId' : 'UserController.getUser',
   '/findFacebookFriends' : 'UserController.findFacebookFriends',
+  '/feed/getHomeFeed' : 'FeedController.getHomeFeed'
 
   /***************************************************************************
   *                                                                          *
