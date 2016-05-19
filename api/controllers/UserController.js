@@ -7,17 +7,20 @@
 
 var FB = require('fb');
 
+var randtoken = require('rand-token');
+
+var secret = "khjfkhzkghkzhnyuyiaubtiyt7845673487qvtbcnybyw879";
+
 module.exports = {
 	create : function(req, res) {
-		console.log(req.body.fbId)
+	
+		
+
 		if (!req.body.fbId) {
 			if (req.body.password !== req.body.confirm_password) {
 				return res.json(401, {error:"Password doesn\'t match, What a shame!'"})
 			};
-		} else {
-			console.log('CI ARRIVO')
 		}
-
 
 
 
@@ -27,14 +30,28 @@ module.exports = {
 			}
 			// If user created successfuly we return user and token as response
 			if (user) {
-			// NOTE: payload is { id: user.id}
 
-				return res.json({user: user, token: jwtservice.issue({id: user.id})}); 
+				var userId=user.id;
+
+				var token = randtoken.generate(16);
+
+				token = token+":"+userId;
+
+				Activation.create({token:token, user:userId})
+					.exec(function(err, activation){
+						if (!err) {
+							postmarkservice.sendActivationEmail(token, user);
+							return res.json({user: user}); 			
+						} else {
+							return res.json(401, err);
+						}
+					})					
+
+
+
+				
 			}
 		});
-	},
-	update : function(req, res) {
-		
 	},
 	findFacebookFriends: function(req, res) {
 			

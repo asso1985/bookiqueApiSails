@@ -39,6 +39,7 @@ module.exports.routes = {
   '/auth/register' : 'UserController.create',
   '/auth/check' : 'AuthController.check',
   '/auth/checkfbUser' : 'AuthController.checkfbUser',
+  '/auth/activate' : 'AuthController.activateUser',
   '/advice/latest' : 'AdviceController.getLatest',
   '/advice/create' : 'AdviceController.mycreate',
   '/advice/getAdviceByBookStart' : 'AdviceController.getAdviceByBookStart',

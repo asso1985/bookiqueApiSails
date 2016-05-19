@@ -57,9 +57,10 @@ module.exports = {
   		type : "string",
       defaultsTo : "/assets/images/thumb.jpg"
   	},
-    state: {
+    status: {
     	type: 'string',
-    	enum: ['pending', 'approved', 'denied']
+    	enum: ['pending', 'approved', 'denied'],
+      defaultsTo : "pending"
     }  	
   },
 

@@ -10,11 +10,12 @@ module.exports = {
     var email = req.body.email;
     var password = req.body.password;
     var fbId = req.body.fbId;
+
     console.log(fbId);
     if (fbId) {
       User.findOne({fbId: fbId}, function (err, user) {
         if (!user) {
-          return res.json(401, {err: 'facebook user does not exist'});
+          return res.json(401, {err: 'This Facebook user does not exist'});
         } else {
           res.json({
             user: user,
@@ -24,12 +25,18 @@ module.exports = {
       })
     } else {
       if (!email || !password) {
-        return res.json(401, {err: 'email and password required'});
-      }      
+        return res.json(401, {err: 'Sorry, email and password are required'});
+      }     
+
+      
 
       User.findOne({email: email}, function (err, user) {
         if (!user) {
-          return res.json(401, {err: 'invalid email or password 1'});
+          return res.json(401, {err: 'Sorry, invalid email or password'});
+        }
+
+        if (user.status != 'approved') {
+          return res.json(401, {err: 'Your account is not active, please check in your inbox for a validation email'});
         }
 
         User.comparePassword(password, user, function (err, valid) {
@@ -38,7 +45,7 @@ module.exports = {
           }
 
           if (!valid) {
-            return res.json(401, {err: 'invalid email or password 2'});
+            return res.json(401, {err: 'invalid password'});
           } else {
             res.json({
               user: user,
@@ -53,9 +60,9 @@ module.exports = {
     var fbId = req.body.fbId;
     User.findOne({fbId: fbId}, function (err, user) {
       if (user) {
-        return res.json(200, {result : true, message : "facebook user exist", user : user})
+        return res.json(200, {result : true, message : "This Facebook user exist", user : user})
       } else {
-        return res.json(401, {result : false, message : "facebook user does not exist"})
+        return res.json(401, {result : false, message : "This Facebook user does not exist"})
       }
     })
   }, 
@@ -68,5 +75,20 @@ module.exports = {
         return res.json(200, {success: 'valid'})
       }
     });    
-  }
+  },
+  activateUser : function(req, res) {
+    var token = req.body.token;
+    Activation.find({token:token}, function(err, act){
+        if (!err) {
+          console.log(act);
+          User.update(act.user, {status:"approved"}, function(err, updated){
+            if (!err) {
+              return res.json(200, {activated:"true"});
+            };
+          })
+          
+        };
+    })
+    
+  }  
 };
