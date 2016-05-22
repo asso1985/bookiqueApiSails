@@ -40,7 +40,9 @@ module.exports = {
 				Activation.create({token:token, user:userId})
 					.exec(function(err, activation){
 						if (!err) {
-							postmarkservice.sendActivationEmail(token, user);
+							if (!req.body.fbId) {
+								postmarkservice.sendActivationEmail(token, user);	
+							};
 							return res.json({user: user}); 			
 						} else {
 							return res.json(401, err);
