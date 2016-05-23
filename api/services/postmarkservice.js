@@ -24,21 +24,10 @@ module.exports.sendActivationEmail = function(token, user) {
       "name": user.name,
       "action_url": "http://beta.bookique.it/#/confirm/",
       "token": token,
-      "username": "assad.omar.1985@gmail.com",
+      "username": user.email,
       "sender_name": "Bookique Registration Confirm"
     }
   });
-  // client.sendEmail({
-  //     "From": "info@bookique.it",
-  //     "To": "assadi.omar.1985@gmail.com",
-  //     "Subject": "Test", 
-  //     "TextBody": text
-  // }, function(error, success) {
-  //     if(error) {
-  //         console.error("Unable to send via postmark: " + error.message);
-  //         return;
-  //     }
-  //     console.info("Sent to postmark for delivery")
-  //   });  
+ 
   
 };
