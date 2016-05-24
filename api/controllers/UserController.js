@@ -14,15 +14,11 @@ var secret = "khjfkhzkghkzhnyuyiaubtiyt7845673487qvtbcnybyw879";
 module.exports = {
 	create : function(req, res) {
 	
-		
-
 		if (!req.body.fbId) {
 			if (req.body.password !== req.body.confirm_password) {
 				return res.json(401, {error:"Password doesn\'t match, What a shame!'"})
 			};
 		}
-
-
 
 		User.create(req.params.all()).exec(function (err, user) {
 			if (err) {
@@ -57,7 +53,7 @@ module.exports = {
 	},
 	findFacebookFriends: function(req, res) {
 			
-
+		var currentUserId = req.body.userId;
 		var limit = 10;
 		var page = req.body.page;
 		var skip = page*10;
@@ -88,19 +84,39 @@ module.exports = {
 			},
 			getBookiqueUsers : ["getFacebookUsers", function(cb, results) {
 				User.find({fbId:results.getFacebookUsers}).exec(cb);
+			}],
+			checkIfIsFollowing : ["getBookiqueUsers", function(cb, resultsBookiqueUsers){
+				// console.log("resultsBookiqueUsers")
+				// console.log(resultsBookiqueUsers);
+				async.eachSeries(resultsBookiqueUsers.getBookiqueUsers, function(bookiqueUser, next){
+					// console.log(bookiqueUser)
+					Follower.find({where : {followee:bookiqueUser.id, follower:currentUserId}})
+						.exec(function(err, isFollowee){
+							// console.log("isFollowee")
+							if (!err) {
+								if (isFollowee.length > 0) {
+									bookiqueUser.following = true;
+								} else {
+									bookiqueUser.following = false;
+								}
+							};
+							next();
+						})
+				}, function(err) {
+					if (!err) {
+						// console.log(resultsBookiqueUsers.getBookiqueUsers);
+
+						var fbUsers = resultsBookiqueUsers.getBookiqueUsers;
+				
+						return res.json(200, fbUsers);			
+
+					} else {
+						return res.json(401, {err:err})
+					}
+				})
 			}]
-
-
-		}, function allTasksDone(err, results) {
-			
-			if (err) {return res.json(401, {err:err})};
-
-
-			var fbUsers = results.getBookiqueUsers;
-
 			
 
-			return res.json(200, fbUsers);
 
 		})
 
