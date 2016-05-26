@@ -64,7 +64,7 @@ module.exports = {
 
 
 		var queryFollowers = Follower.find({where : {followee:followeeId}})
-			.limit(9)
+			.limit(12)
 			.sort('createdAt DESC')
 			.populate('follower')
 			
@@ -94,7 +94,7 @@ module.exports = {
 
 
 		var queryFollowers = Follower.find({where : {follower:followerId}})
-			.limit(9)
+			.limit(12)
 			.sort('createdAt DESC')
 			.populate('followee')
 			
