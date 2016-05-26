@@ -83,11 +83,26 @@ module.exports = {
 				
 			},
 			getBookiqueUsers : ["getFacebookUsers", function(cb, results) {
+				results.getFacebookUsers.push(1278447152184423);
 				User.find({fbId:results.getFacebookUsers}).exec(cb);
 			}],
 			checkIfIsFollowing : ["getBookiqueUsers", function(cb, resultsBookiqueUsers){
 				// console.log("resultsBookiqueUsers")
-				// console.log(resultsBookiqueUsers);
+				console.log(resultsBookiqueUsers.getBookiqueUsers);
+				//resultsBookiqueUsers.getBookiqueUsers.push()
+				// resultsBookiqueUsers.getBookiqueUsers.push({
+				// 	fbId: 1278447152184423,
+				//     username: 'Gianni Break 2',
+				//     email: 'assadi.omar.1985@gmail.com',
+				//     name: 'Gianni',
+				//     surname: 'Break 2',
+				//     thumb: 'http://graph.facebook.com/1278447152184443/picture?type=large',
+				//     registered: '1463691028230',
+				//     status: 'pending',
+				//     createdAt: '2016-05-19T20:50:28.250Z',
+				//     updatedAt: '2016-05-19T20:50:28.250Z',
+				//     id: '573e27140cc6c211364c02b6'					
+				// })
 				async.eachSeries(resultsBookiqueUsers.getBookiqueUsers, function(bookiqueUser, next){
 					// console.log(bookiqueUser)
 					Follower.find({where : {followee:bookiqueUser.id, follower:currentUserId}})
@@ -99,8 +114,10 @@ module.exports = {
 								} else {
 									bookiqueUser.following = false;
 								}
+
+								next();
 							};
-							next();
+							
 						})
 				}, function(err) {
 					if (!err) {

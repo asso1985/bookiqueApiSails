@@ -127,7 +127,7 @@ module.exports = {
 		var userId = req.body.userId;
 		var adviceId = req.body.adviceId;
 
-		console.log('Advice ID: '+adviceId);
+		//console.log('Advice ID: '+adviceId);
 
 		AdviceLike.findOrCreate({where:{objectLiked:adviceId, user:userId}})
 			.exec(function callBack(err, likeObject){
@@ -137,7 +137,7 @@ module.exports = {
 						Advice.findOne({id:adviceId}, function foundAdvice(err, advice){
 							var likes;
 
-							console.log(advice);
+							
 
 							if (advice.likes) {
 								likes = advice.likes+1;
@@ -145,12 +145,26 @@ module.exports = {
 								likes = 1;
 							}
 
-							console.log(likes);
+							
 							
 							Advice.update(adviceId, {likes:likes}, function(errUpdate, updated){
 								if (!err) {
-									console.log(updated);
-									return res.json(200, likeObject);			
+									Notification.create({
+										receiver : updated[0].user,
+										objectId : updated[0].id,
+										sender : userId,
+										type : "likeAdvice"										
+									}).exec(function notificationCallback(err, addedNotifcation) {
+										if (!err) {
+											console.log(addedNotifcation);
+											var roomName = "user_notification_"+updated[0].user.id;
+											sails.sockets.broadcast(roomName, { addedNotifcation: addedNotifcation });
+										} else {
+											console.log(err);
+										}
+										return res.json(200, likeObject);
+									})
+											
 								} else {
 									return res.json(401, errUpdate);
 								}

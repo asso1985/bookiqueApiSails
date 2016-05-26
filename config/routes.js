@@ -60,7 +60,9 @@ module.exports.routes = {
   '/findFacebookFriends' : 'UserController.findFacebookFriends',
   '/feed/getHomeFeed' : 'FeedController.getHomeFeed',
   '/feed/getProfileFeed' : 'FeedController.getProfileFeed',
-  '/feed/getFeedDetail/:type:/id' : 'FeedController.getFeedDetail'
+  '/feed/getFeedDetail/:type:/id' : 'FeedController.getFeedDetail',
+  '/notifications/getUserNotifications' : 'NotificationController.getUserNotifications',
+  '/notifications/setNotificationAsRead' : 'NotificationController.setNotificationAsRead'
 
   /***************************************************************************
   *                                                                          *

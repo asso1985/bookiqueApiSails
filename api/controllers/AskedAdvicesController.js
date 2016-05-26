@@ -35,15 +35,35 @@ module.exports = {
 		var askedAdviceId = req.body.askedAdviceId;
 		var reply = req.body.reply;
 
+		console.log(askedAdviceId);
+
 
 		var queryFindAskedAdvice = AskedAdvices.findOne(askedAdviceId).populate("replayAdvices").exec(function callBack(err, r){
-			console.log(r[0]);
+			console.log(r);
 			var queryReplyBookEnd = ReplyBookEnd.create(reply).exec(function createCB(err, created){
+
+
 				
 				r.replayAdvices.add(created.id);
 				r.save(function(err,saved){
 				    if (!err) {
-				    	return res.json(200, {reply: created});
+
+					Notification.create({
+						receiver : r.user,
+						objectId : askedAdviceId,
+						sender : reply.user,
+						type : "replyAskedAdvice"										
+					}).exec(function notificationCallback(err, addedNotifcation) {
+						if (!err) {
+							console.log(addedNotifcation);
+						} else {
+							console.log(err);
+						}
+						// return res.json(200, likeObject);
+						return res.json(200, {reply: created});
+					})
+
+				    	
 				    } else {
 				    	return res.json(401, {err:err});
 				    }

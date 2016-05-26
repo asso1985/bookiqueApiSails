@@ -14,25 +14,29 @@ module.exports = {
 				.populate('user');
 
 			queryAdvices.exec(function callBack(err,results){
-				results.forEach(function(item, i){
-					item.type = "advice";					
-				})	
+				if (results.length > 0) {
+					results.forEach(function(item, i){
+						item.type = "advice";					
+					})	
 
-				if (!err) {
-					AdviceLike.find({user:req.body.userId, objectLiked: results[0].id})
-						.exec(function callBack(err,resultsLike){
-							if (!err) {
-								if (resultsLike[0]) {
-									results[0].liked = true;
-								};										
-								return res.json(200, results);
-							} else {
-								return res.json(401, err);
-							}
-						})					
-					
+					if (!err) {
+						AdviceLike.find({user:req.body.userId, objectLiked: results[0].id})
+							.exec(function callBack(err,resultsLike){
+								if (!err) {
+									if (resultsLike[0]) {
+										results[0].liked = true;
+									};										
+									return res.json(200, results);
+								} else {
+									return res.json(401, err);
+								}
+							})					
+						
+					} else {
+						return res.json(401, {err:err})
+					}
 				} else {
-					return res.json(401, {err:err})
+					return res.json(403, {err : "Not found"})
 				}
 				
 			})
