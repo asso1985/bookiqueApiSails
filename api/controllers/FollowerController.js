@@ -19,7 +19,21 @@ module.exports = {
 						Follower.create(req.body)
 							.exec(function callBack(err, following){
 								if (!err) {
-									return res.json(200, following);
+									console.log(following);
+									Notification.create({
+										receiver : following.followee,
+										objectId : following.follower,
+										sender : following.follower,
+										type : "newFollower"										
+									}).exec(function notificationCallback(err, addedNotifcation) {
+										if (!err) {
+											console.log(addedNotifcation);
+										} else {
+											console.log(err);
+										}
+										return res.json(200, following);
+									})									
+									
 								} else {
 									return res.json(401, {err:err});
 								}
@@ -31,6 +45,18 @@ module.exports = {
 			})
 		} else {
 			return res.json(401, {err:{message:"params missing"}});
+		}
+	},
+	unFollowUser : function(req, res) {
+		if (req.body.follower && req.body.followee) {
+			Follower.destroy({where : {follower:req.body.follower, followee: req.body.followee}})
+				.exec(function callBack(err, deleted){
+					if (!err) {
+						return res.json(200, deleted);
+					} else {
+						return res.json(401, err);
+					}
+				})
 		}
 	},
 	getFollowers : function(req, res) {

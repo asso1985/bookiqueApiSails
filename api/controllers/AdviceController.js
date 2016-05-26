@@ -157,8 +157,6 @@ module.exports = {
 									}).exec(function notificationCallback(err, addedNotifcation) {
 										if (!err) {
 											console.log(addedNotifcation);
-											var roomName = "user_notification_"+updated[0].user.id;
-											sails.sockets.broadcast(roomName, { addedNotifcation: addedNotifcation });
 										} else {
 											console.log(err);
 										}

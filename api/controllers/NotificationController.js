@@ -22,7 +22,6 @@ module.exports = {
 							unreadCounter++;
 						};
 						result.data.push(item);
-
 					};
 				})
 

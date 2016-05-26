@@ -56,6 +56,7 @@ module.exports.routes = {
   '/follower/getFollowers/:followeeId' : 'FollowerController.getFollowers',
   '/follower/getFollowees/:followerId' : 'FollowerController.getFollowees',
   '/followUser' : 'FollowerController.followUser',
+  '/unFollowUser' : 'FollowerController.unFollowUser',
   '/user/getUser/:id/:userSessionId' : 'UserController.getUser',
   '/findFacebookFriends' : 'UserController.findFacebookFriends',
   '/feed/getHomeFeed' : 'FeedController.getHomeFeed',
