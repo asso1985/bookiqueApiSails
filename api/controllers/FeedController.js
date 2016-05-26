@@ -111,6 +111,14 @@ module.exports = {
 							.populate("user")
 							.populate("bookStart");
 
+							if (req.body.limit) {
+								queryAskedAdvices.limit(req.body.limit);	
+							};
+
+							if (req.body.skip) {
+								queryAskedAdvices.skip(req.body.skip);	
+							};							
+
 						queryAskedAdvices.exec(function callBack(err,askedAdvices){
 							if (!err) {			
 								
@@ -139,6 +147,11 @@ module.exports = {
 	},
 	getHomeFeed : function(req, res) {
 
+		var limit = parseInt(req.body.limit)/2;
+		var skip = parseInt(req.body.skip)/2;
+
+		// console.log(limit);
+		// console.log(skip);
 
 		var feedResponse = [];
 
@@ -152,12 +165,12 @@ module.exports = {
 		
 		queryAdvices.sort('createdAt DESC');
 
-		if (req.body.limit) {
-			queryAdvices.limit(req.body.limit);	
+		if (limit) {
+			queryAdvices.limit(limit);	
 		};
 
-		if (req.body.skip) {
-			queryAdvices.skip(req.body.skip);	
+		if (skip > 0) {
+			queryAdvices.skip(skip);	
 		};		
 
 		queryAdvices.exec(function callBack(err,results){
@@ -187,6 +200,14 @@ module.exports = {
 							.populate("replayAdvices.user")
 							.populate("user")
 							.populate("bookStart");
+
+							if (limit) {
+								queryAskedAdvices.limit(limit);	
+							};
+
+							if (skip > 0) {
+								queryAskedAdvices.skip(skip);	
+							};								
 
 						queryAskedAdvices.exec(function callBack(err,askedAdvices){
 							if (!err) {			
