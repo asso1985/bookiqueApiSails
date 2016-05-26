@@ -12,12 +12,21 @@ module.exports = {
 			.populate('sender')
 			.sort("createdAt DESC")
 			.exec(function callback(err, found){	
-				var result = [];
+				var result = {
+					data : []
+				};
+				var unreadCounter = 0;
 				found.forEach(function(item ,i){
 					if (item.sender) {
-						result.push(item);
+						if (!item.read) {
+							unreadCounter++;
+						};
+						result.data.push(item);
+
 					};
-				}) 								
+				})
+
+				result.unread = unreadCounter;							
 				return res.json(200, result);
 			})
 	},
