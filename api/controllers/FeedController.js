@@ -217,6 +217,10 @@ module.exports = {
 									feedResponse.push(item);
 								})	
 
+								feedResponse = _.sortBy(feedResponse, "createdAt");
+
+								feedResponse.reverse();
+
 								return res.json(200, feedResponse);
 							} else {
 								return res.json(401, {err:err})
