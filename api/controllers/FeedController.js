@@ -194,12 +194,12 @@ module.exports = {
 				}, function(err){
 					if (!err) {
 
-						var queryAskedAdvices = AskedAdvices.find()
-							.sort("createdAt DESC")
+						var queryAskedAdvices = AskedAdvices.find()							
 							.populate("replayAdvices.bookEnd")
 							.populate("replayAdvices.user")
 							.populate("user")
-							.populate("bookStart");
+							.populate("bookStart")
+							.sort("createdAt DESC")
 
 							if (limit) {
 								queryAskedAdvices.limit(limit);	
