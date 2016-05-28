@@ -68,6 +68,9 @@ module.exports = {
 	getProfileFeed : function(req, res) {
 		var feedResponse = [];
 
+		var limit = parseInt(req.body.limit)/2;
+		var skip = parseInt(req.body.skip)/2;		
+
 		var queryAdvices = Advice.find({user:req.body.profileId})
 			.populate('bookStart')
 			.populate('bookEnd')
@@ -75,13 +78,13 @@ module.exports = {
 
 		queryAdvices.sort('createdAt DESC');
 
-		if (req.body.limit) {
-			queryAdvices.limit(req.body.limit);	
+		if (limit) {
+			queryAdvices.limit(limit);	
 		};
 
-		if (req.body.skip) {
-			queryAdvices.skip(req.body.skip);	
-		};				
+		if (skip > 0) {
+			queryAdvices.skip(skip);	
+		};		
 
 		queryAdvices.exec(function callBack(err,results){
 
@@ -111,13 +114,13 @@ module.exports = {
 							.populate("user")
 							.populate("bookStart");
 
-							if (req.body.limit) {
-								queryAskedAdvices.limit(req.body.limit);	
+							if (limit) {
+								queryAskedAdvices.limit(limit);	
 							};
 
-							if (req.body.skip) {
-								queryAskedAdvices.skip(req.body.skip);	
-							};							
+							if (skip > 0) {
+								queryAskedAdvices.skip(skip);	
+							};						
 
 						queryAskedAdvices.exec(function callBack(err,askedAdvices){
 							if (!err) {			
@@ -126,6 +129,10 @@ module.exports = {
 									item.type = "askedAdvice";									
 									feedResponse.push(item);
 								})	
+
+								feedResponse = _.sortBy(feedResponse, "createdAt");
+
+								feedResponse.reverse();								
 
 								return res.json(200, feedResponse);
 							} else {
