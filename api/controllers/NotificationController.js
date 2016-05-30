@@ -7,11 +7,22 @@
 
 module.exports = {
 	getUserNotifications : function(req, res) {
-		Notification.find({where:{receiver : req.body.userId}, limitTo : 5, skip:0})
+		var limit = req.body.limit;
+		var skip = req.body.skip;
+		var queryNotifications = Notification.find({where:{receiver : req.body.userId}})
 			.populate('receiver')
 			.populate('sender')
-			.sort("createdAt DESC")
-			.exec(function callback(err, found){	
+			.sort("createdAt DESC");
+
+			if (limit) {
+				queryNotifications.limit(limit);	
+			};
+
+			if (skip > 0) {
+				queryNotifications.skip(skip);	
+			};				
+			
+			queryNotifications.exec(function callback(err, found){	
 				var result = {
 					data : []
 				};
