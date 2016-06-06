@@ -10,7 +10,7 @@ var querystring = require('querystring');
 // https://developers.google.com/books/docs/v1/using#st_params
 var defaultOptions = {
     // Google API key
-    key: null,
+    key: 'AIzaSyDoHcUzYQh14Wj07a47k5o2stt8zLJJPF0',
     // Search in a specified field  
     field: null,
     // The position in the collection at which to start the list of results (startIndex)
@@ -167,7 +167,7 @@ var search = function(query, options, callback) {
 var getBook = function(id, key, callback) {
 
     var uri = '';
-
+    console.log('HEY')
 
     if ( ! callback || typeof callback != "function") {
         // Callback is the second parameter
@@ -176,10 +176,12 @@ var getBook = function(id, key, callback) {
         key = undefined;
     }
     if (key!=undefined) {
-        uri = 'https://www.googleapis.com/books/v1/volumes/'+id+'?key=yourAPIKey'
+        uri = 'https://www.googleapis.com/books/v1/volumes/'+id+'?key='+defaultOptions.key+''
     } else {
-        uri = 'https://www.googleapis.com/books/v1/volumes/'+id+'';
+        uri = 'https://www.googleapis.com/books/v1/volumes/'+id+'?key='+defaultOptions.key+'';
     }
+
+    console.log(uri);
 
 
     https.get(uri, function(response){
@@ -202,7 +204,11 @@ var getBook = function(id, key, callback) {
                     if (book.industryIdentifiers && book.industryIdentifiers[0]) push.isbn = book.industryIdentifiers[0].identifier;
                     if (book.title) push.title = book.title;
                     if (book.authors) push.authors = book.authors;
-                    if (book.imageLinks && book.imageLinks.small) {
+                    if (book.imageLinks && book.imageLinks.large) {
+                        push.thumb = book.imageLinks.large;
+                    } else if (book.imageLinks && book.imageLinks.medium) {
+                        push.thumb = book.imageLinks.medium;
+                    } else if(book.imageLinks && book.imageLinks.small) {
                         push.thumb = book.imageLinks.small;
                     } else if(book.imageLinks && book.imageLinks.thumbnail){
                         push.thumb = book.imageLinks.thumbnail; 
